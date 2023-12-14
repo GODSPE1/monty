@@ -15,7 +15,7 @@ int main(int argc, char **argv)
 	char **opcode_array;
 	size_t read;
 
-	size_t i = 0;
+	size_t i;
 	line = NULL;
 	len = 0;
 	line_numb = 1;
@@ -33,18 +33,19 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
-	read = getline(&line , &len, file);
-	while ( read != -1)
+	while (getline(&line , &len, file) != -1)
 	{
 		opcode_array = tokenize(line, delim);
-
-		for (; opcode_array[i] != NULL; i++)
+		printf("____line number = %ld____\n", line_numb);
+		for (i = 0; opcode_array[i] != NULL; i++)
 		{
-			printf("opcode = %s", opcode_array[i]);
+			printf("opcode = %s \n",opcode_array[i]);
 		}
-	}
+		line_numb += 1;
 
-	free_mem(opcode_array);
+		i = 0;
+		free_mem(opcode_array);
+	}
 	fclose(file);
 	return (0);
 }
