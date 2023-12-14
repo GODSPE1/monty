@@ -10,16 +10,16 @@
 int main(int argc, char **argv)
 {
 	FILE *file;
-	char *line, *delim;
-	size_t len, line_numb;
-	char **opcode_array;
+	char *line, command;
+	size_t *size;
+	size_t line_numb;
+	stack_t *stack;
 	size_t read;
 
-	size_t i = 0;
 	line = NULL;
-	len = 0;
+	size = 0;
+	stack = NULL;
 	line_numb = 1;
-	delim = " ";
 
 	if (argc != 2)
 	{
@@ -28,23 +28,31 @@ int main(int argc, char **argv)
 	}
 	file = fopen(argv[1], "r");
 	if (file == NULL)
-	{
 		fprintf(stderr, "Error: Can't open file %s", argv[1]);
 		exit(EXIT_FAILURE);
-	}
-
-	read = getline(&line , &len, file);
-	while ( read != -1)
+	while (getline(&line , size, file) != -1)
 	{
-		opcode_array = tokenize(line, delim);
 
-		for (; opcode_array[i] != NULL; i++)
+		printf("%s",line);
+		/*
+		command = find_command(line, &stack, line_numb);
+		if (strcmp(command, "op"))
+			use-command(command, &stack, &line_numb);
+
+		if (ret_and_q.opcode_return != 0)
 		{
-			printf("opcode = %s", opcode_array[i]);
+			free_exit(&line, file, stack);
 		}
+		line_numb++;
+		read = getline(&line, size, file);
+		*/
 	}
 
-	free_mem(opcode_array);
+/*
+free_stack();
+	free(line);
+*/
+	
 	fclose(file);
 	return (0);
 }
