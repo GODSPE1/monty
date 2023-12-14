@@ -37,10 +37,14 @@ int main(int argc, char **argv)
 	{
 		opcode_array = tokenize(line, delim);
 		printf("____line number = %ld____\n", line_numb);
-		for (i = 0; opcode_array[i] != NULL; i++)
-		{
-			printf("opcode = %s \n",opcode_array[i]);
-		}
+		/*
+		 * for (i = 0; opcode_array[i] != NULL; i++)
+		 * {
+		 * 	printf("opcode = %s \n",opcode_array[i]);
+		 * }
+		 */
+		printf("opcode = %s \n",opcode_array[0]);
+		printf("argument = %s \n",opcode_array[1]);
 		line_numb += 1;
 
 		i = 0;
