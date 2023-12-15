@@ -5,9 +5,12 @@
  * @value: the value to be pushed onto the stack
  * @line_num: line number where the push is from
  */
-void push(stack_t **stack, char *value, size_t line_num)
+
+void push(stack_t **stack, size_t line_num)
 {
-    if (value == NULL || !is_integer(value))
+    char *value;
+
+    if (isalpha(atoi(value)))
     {
         dprintf(2, "L%lu: usage: push integer\n", line_num);
         exit(EXIT_FAILURE);
@@ -35,39 +38,15 @@ void push(stack_t **stack, char *value, size_t line_num)
 
 
 /**
- * is_integer - checks if a string is a valid integer.
- * @value: the character to check.
- *
- * Return: 0
- */
-void is_integer(int value)
-{
-	int i;
-
-
-	if (arg == NULL)
-		return (1);
-	i = 0;
-	while (arg[i] != '\0')
-	{
-		if (isalpha(arg[i]))
-			return (1);
-		i++;
-	}
-	return (0);
-
-}
-
-/**
  * pall_func - prints all the elements of stack_t list
  * @stack_t: a pointer to the top node list_t structure
  *
  * Return: Nothing.
  */
-void pall_func(stack_t **stack, size_t line_num)
+void pall(stack_t **stack, size_t line_num)
 {
 	(void)line_num;
-	stack_t *h
+	stack_t *h;
 
 	while (h != NULL)
 	{

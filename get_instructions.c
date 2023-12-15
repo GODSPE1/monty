@@ -4,7 +4,7 @@ void invalid_instruct(size_t line_numb, char *opcode)
 {
     fprintf(stderr, "L%ld: unknown instruction %s\n", line_numb, opcode);
 	free(instructions);
-	exit(EXIT_FAILURE)
+	exit(EXIT_FAILURE);
 }
 
 void get_instructions(size_t line_numb, char *opcode)
@@ -16,14 +16,14 @@ void get_instructions(size_t line_numb, char *opcode)
         {NULL, NULL}
     };
 
-for (instructions[i].opcode != NULL)
+for (; instructions[i].opcode != NULL; i++)
 {
-    if (strcmp(instructions[i].opcode, opcode[0]) == 0)
+    if (strcmp(instructions[i].opcode, opcode) == 0)
     {
-        instructions->opcode = instructions.opcode;
-        instructions->f = instructions.&push;
+        instructions->opcode = instructions[i].opcode;
+        instructions->f = instructions[i].f;
     }
 }
 
-    invalid_instruct(line_numb, opcode[0]);
+    invalid_instruct(line_numb, opcode);
 }

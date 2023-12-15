@@ -15,7 +15,8 @@ int main(int argc, char **argv)
 	size_t len, line_numb;
 	char **opcode;
 	size_t read;
-
+	stack_t *stack = NULL;
+	extern char *value;
 
 	size_t i;
 	line = NULL;
@@ -40,6 +41,7 @@ int main(int argc, char **argv)
 		opcode = tokenize(line, delim);
 		printf("____line number = %ld____\n", line_numb);
 		instructions = malloc(sizeof(instruction_t));
+		value = opcode[1];
 
 		if (instructions == NULL)
 		{
@@ -47,14 +49,16 @@ int main(int argc, char **argv)
 			free(instructions);
 		}
 		
-		
+		if (opcode != NULL)
+		{
+		get_instructions(line_numb, opcode[0]);
+		instructions->f(&stack, line_numb);
+		}
+
 		printf("opcode = %s \n",opcode[0]);
 		printf("argument = %s \n",opcode[1]);
 
-		if (instructions->f != NULL)
-			instructions->f(stack, opcode[1]);
 		line_numb += 1;
-
 		i = 0;
 		free(instructions);
 		free_mem(opcode);
