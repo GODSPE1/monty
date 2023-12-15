@@ -57,3 +57,21 @@ void is_integer(int value)
 	return (0);
 
 }
+
+/**
+ * pall_func - prints all the elements of stack_t list
+ * @stack_t: a pointer to the top node list_t structure
+ *
+ * Return: Nothing.
+ */
+void pall_func(stack_t **stack, size_t line_num)
+{
+	(void)line_num;
+	stack_t *h
+
+	while (h != NULL)
+	{
+		printf("%d\n", h->n);
+		h = h->next;
+	}
+}
