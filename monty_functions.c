@@ -8,17 +8,19 @@
 
 void push(stack_t **stack, unsigned int line_num)
 {
+	stack_t *temp;
+
 	if (value == NULL || isalpha(*value))
 	{
-		dprintf(2, "L%u: usage: push integer\n", line_num);
+		fprintf(stderr, "L%u: usage: push integer\n", line_num);
 		exit(EXIT_FAILURE);
 	}
 
-	stack_t *temp = malloc(sizeof(stack_t));
+	temp = malloc(sizeof(stack_t));
 
 	if (temp == NULL)
 	{
-		dprintf(2, "Error: malloc failed\n");
+		fprintf(stderr, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -43,9 +45,9 @@ void push(stack_t **stack, unsigned int line_num)
  */
 void pall(stack_t **stack, unsigned int line_num)
 {
-	(void)line_num;
 	stack_t *h = *stack;
-
+	
+	(void)line_num;
 	while (h != NULL)
 	{
 		printf("%d\n", h->n);

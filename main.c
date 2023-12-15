@@ -19,8 +19,8 @@ int main(int argc, char **argv)
 	size_t len;
 	unsigned int line_numb;
 	char **opcode;
-	size_t read;
 	stack_t *stack = NULL;
+	instruction_t *instructions;
 
 	line = NULL;
 	len = 0;
@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-	instruction_t *instructions = malloc(sizeof(instruction_t));
+	instructions = malloc(sizeof(instruction_t));
 	if (instructions == NULL)
 	{
 		printf("Error: malloc failed");
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
-	while (getline(&line, &len, file) != -1)
+	while ((getline(&line, &len, file)) != -1)
 	{
 		line_cpy = strdup(line);
 		if (line_cpy == NULL)
