@@ -39,4 +39,9 @@ char **tokenize(char *line, char *delim);
 
 void free_mem(char **arg);
 
+void push(stack_t **stack, char *value, size_t line_num);
+
+void is_integer(int value);
+
+void pall_func(stack_t **stack, size_t line_num);
 #endif
