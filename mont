@@ -1,4 +1,24 @@
 #include "monty.h"
+/**
+ * free_mem - free the  allocated memory
+ * @arg: string of arguments
+ *
+ * Return: Nothing
+ */
+void free_mem(char **arg)
+{
+	int i;
+
+	for (i = 0; arg[i]; i++)
+	{
+		if  (arg[i] != NULL)
+			free(arg[i]);
+	}
+
+	if (arg != NULL)
+		free(arg);
+}
+#include "monty.h"
 
 void invalid_instruct(size_t line_numb, char *opcode)
 {
@@ -11,8 +31,8 @@ void get_instructions(size_t line_numb, char *opcode)
 {
     int i = 0; 
     instruction_t instructions[] = {
-        {"push", &push},
-        {"pall", &pall},
+        {"push", push},
+        {"pall", pall},
         {NULL, NULL}
     };
 
@@ -23,9 +43,8 @@ for (; instructions[i].opcode != NULL; i++)
         instructions->opcode = instructions[i].opcode;
         instructions->f = instructions[i].f;
     }
-}
-
-    invalid_instruct(line_numb, opcode);
+    else
+        invalid_instruct(line_numb, opcode);
 }
 #include "monty.h"
 
@@ -35,6 +54,80 @@ void init_instruction(instruction_t *inst, char *opcode, void *func)
     inst->f = func;
 }
 #include "monty.h"
+
+/**
+ * main - Entry point
+ * @argc: Argument count
+ * @argv: Argument vector
+ *
+ * Return: 0
+ */
+
+instruction_t *instructions;
+char *value;
+int n_tokens;
+
+int main(int argc, char **argv)
+{
+	FILE *file;
+	char *line, *delim;
+	size_t len;
+	unsigned int line_numb;
+	char **opcode;
+	size_t read;
+	stack_t *stack = NULL;
+	extern char *value;
+	/* instruction_t instructions;*/
+
+	size_t i;
+	line = NULL;
+	len = 0;
+	line_numb = 1;
+	delim = " \n";
+
+	if (argc != 2)
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
+	file = fopen(argv[1], "r");
+	if (file == NULL)
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
+	instructions = malloc(sizeof(instruction_t));
+	if (instructions == NULL)
+	{
+		printf("Error: malloc failed");
+		free(instructions);
+	}
+
+	while (getline(&line, &len, file) != -1)
+	{
+		opcode = tokenize(line, delim);
+		printf("____line number = %u____\n", line_numb);
+
+		value = opcode[1];
+
+		if (opcode != NULL)
+		{
+			get_instructions(line_numb, opcode[0]);
+			instructions->f(&stack, line_numb);
+		}
+
+		printf("opcode = %s \n", opcode[0]);
+		printf("argument = %s \n", opcode[1]);
+
+		line_numb += 1;
+		i = 0;
+
+		free_mem(opcode);
+	}
+	free(instructions);
+	fclose(file);
+	return (0);
+}#include "monty.h"
 /**
  * push - pushes an integer into the stack.
  * @stack: pointer to the stack.
@@ -42,13 +135,13 @@ void init_instruction(instruction_t *inst, char *opcode, void *func)
  * @line_num: line number where the push is from
  */
 
-void push(stack_t **stack, size_t line_num)
+void push(stack_t **stack, unsigned int line_num)
 {
     char *value;
 
-    if (isalpha(atoi(value)))
+    if (value == NULL || isalpha(*value))
     {
-        dprintf(2, "L%lu: usage: push integer\n", line_num);
+        dprintf(2, "L%u: usage: push integer\n", line_num);
         exit(EXIT_FAILURE);
     }
 
@@ -79,10 +172,10 @@ void push(stack_t **stack, size_t line_num)
  *
  * Return: Nothing.
  */
-void pall(stack_t **stack, size_t line_num)
+void pall(stack_t **stack, unsigned int line_num)
 {
 	(void)line_num;
-	stack_t *h;
+	stack_t *h = *stack;
 
 	while (h != NULL)
 	{
@@ -123,94 +216,7 @@ char **tokenize(char *line, char *delim)
 
 	return (arg);
 }
-#include "monty.h"
-/**
- * free_mem - free the  allocated memory
- * @arg: string of arguments
- *
- * Return: Nothing
- */
-void free_mem(char **arg)
-{
-	int i;
-
-	for (i = 0; arg[i]; i++)
-	{
-		if  (arg[i] != NULL)
-			free(arg[i]);
-	}
-
-	if (arg != NULL)
-		free(arg);
-}
-#include "monty.h"
-
-/**
- * main - Entry point
- * @argc: Argument count
- * @argv: Argument vector
- *
- * Return: 0
- */
-
-int main(int argc, char **argv)
-{
-	FILE *file;
-	char *line, *delim;
-	size_t len, line_numb;
-	char **opcode;
-	size_t read;
-	stack_t *stack = NULL;
-	extern char *value;
-
-	size_t i;
-	line = NULL;
-	len = 0;
-	line_numb = 1;
-	delim = " \n";
-
-	if (argc != 2)
-	{
-		fprintf(stderr, "USAGE: monty file\n");
-		exit(EXIT_FAILURE);
-	}
-	file = fopen(argv[1], "r");
-	if (file == NULL)
-	{
-		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-		exit(EXIT_FAILURE);
-	}
-
-	while (getline(&line , &len, file) != -1)
-	{
-		opcode = tokenize(line, delim);
-		printf("____line number = %ld____\n", line_numb);
-		instructions = malloc(sizeof(instruction_t));
-		value = opcode[1];
-
-		if (instructions == NULL)
-		{
-			printf("Error: malloc failed");
-			free(instructions);
-		}
-		
-		if (opcode != NULL)
-		{
-		get_instructions(line_numb, opcode[0]);
-		instructions->f(&stack, line_numb);
-		}
-
-		printf("opcode = %s \n",opcode[0]);
-		printf("argument = %s \n",opcode[1]);
-
-		line_numb += 1;
-		i = 0;
-		free(instructions);
-		free_mem(opcode);
-	}
-	fclose(file);
-	return (0);
-}#ifndef _MONTY_H_
+#ifndef _MONTY_H_
 #define _MONTY_H_
 
 #include <stdio.h>
@@ -259,9 +265,7 @@ void invalid_instruct(size_t line_numb, char *opcode);
 
 void get_instructions(size_t line_numb, char *opcode);
 
-void push(stack_t **stack, size_t line_num);
+void push(stack_t **stack, unsigned int line_num);
 
-void is_integer(int value);
-
-void pall(stack_t **stack, size_t line_num);
+void pall(stack_t **stack, unsigned int line_num);
 #endif

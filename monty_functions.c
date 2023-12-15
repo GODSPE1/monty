@@ -6,34 +6,32 @@
  * @line_num: line number where the push is from
  */
 
-void push(stack_t **stack, size_t line_num)
+void push(stack_t **stack, unsigned int line_num)
 {
-    char *value;
+	if (value == NULL || isalpha(*value))
+	{
+		dprintf(2, "L%u: usage: push integer\n", line_num);
+		exit(EXIT_FAILURE);
+	}
 
-    if (isalpha(atoi(value)))
-    {
-        dprintf(2, "L%lu: usage: push integer\n", line_num);
-        exit(EXIT_FAILURE);
-    }
+	stack_t *temp = malloc(sizeof(stack_t));
 
-    stack_t *temp = malloc(sizeof(stack_t));
+	if (temp == NULL)
+	{
+		dprintf(2, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
 
-    if (temp == NULL)
-    {
-        dprintf(2, "Error: malloc failed\n");
-        exit(EXIT_FAILURE);
-    }
+	temp->n = atoi(value);
+	temp->next = *stack;
+	temp->prev = NULL;
 
-    temp->n = atoi(value);
-    temp->next = *stack;
-    temp->prev = NULL;
+	if (*stack != NULL)
+	{
+		(*stack)->prev = temp;
+	}
 
-    if (*stack != NULL)
-    {
-        (*stack)->prev = temp;
-    }
-
-    *stack = temp;
+	*stack = temp;
 }
 
 
@@ -43,10 +41,10 @@ void push(stack_t **stack, size_t line_num)
  *
  * Return: Nothing.
  */
-void pall(stack_t **stack, size_t line_num)
+void pall(stack_t **stack, unsigned int line_num)
 {
 	(void)line_num;
-	stack_t *h;
+	stack_t *h = *stack;
 
 	while (h != NULL)
 	{

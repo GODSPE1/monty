@@ -17,9 +17,9 @@
  */
 typedef struct stack_s
 {
-        int n;
-        struct stack_s *prev;
-        struct stack_s *next;
+	int n;
+	struct stack_s *prev;
+	struct stack_s *next;
 } stack_t;
 extern stack_t *stack;
 /**
@@ -32,11 +32,14 @@ extern stack_t *stack;
  */
 typedef struct instruction_s
 {
-        char *opcode;
-        void (*f)(stack_t **stack, unsigned int line_number);
+	char *opcode;
+	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
 extern instruction_t *instructions;
+
+extern char *value;
+
 char **tokenize(char *line, char *delim);
 
 void free_mem(char **arg);
@@ -45,11 +48,9 @@ void init_instruction(instruction_t *inst, char *opcode, void *func);
 
 void invalid_instruct(size_t line_numb, char *opcode);
 
-void get_instructions(size_t line_numb, char *opcode);
+void get_instructions(size_t line_numb, char *opcode, instruction_t *inst);
 
-void push(stack_t **stack, size_t line_num);
+void push(stack_t **stack, unsigned int line_num);
 
-void is_integer(int value);
-
-void pall(stack_t **stack, size_t line_num);
+void pall(stack_t **stack, unsigned int line_num);
 #endif

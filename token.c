@@ -13,6 +13,7 @@ char **tokenize(char *line, char *delim)
 {
 	char **arg, *token;
 	int i = 0;
+	size_t len = 0;
 	n_tokens = 0;
 
 	arg = (char **)malloc(101 * sizeof(char *));
@@ -21,6 +22,12 @@ char **tokenize(char *line, char *delim)
 
 	while (token != NULL)
 	{
+		len = strlen(token);
+		while (len > 0 && !isalnum(token[len - 1]))
+		{
+			token[--len] = '\0';
+		}
+
 		arg[i] = malloc(strlen(token) + 1);
 		strcpy(arg[i++], token);
 		n_tokens += 1;
