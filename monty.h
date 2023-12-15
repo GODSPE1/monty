@@ -20,7 +20,7 @@ typedef struct stack_s
         struct stack_s *prev;
         struct stack_s *next;
 } stack_t;
-
+extern stack_t *stack;
 /**
  * struct instruction_s - opcode and its function
  * @opcode: the opcode
@@ -35,8 +35,15 @@ typedef struct instruction_s
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+extern instruction_t *instructions;
 char **tokenize(char *line, char *delim);
 
 void free_mem(char **arg);
+
+void init_instruction(instruction_t *inst, char *opcode, void *func);
+
+void invalid_instruct(size_t line_numb, char *opcode);
+
+void get_instructions(size_t line_numb, char *opcode);
 
 #endif

@@ -8,10 +8,12 @@
  * Return: array of strings a
  */
 
+extern int n_tokens;
 char **tokenize(char *line, char *delim)
 {
 	char **arg, *token;
 	int i = 0;
+	n_tokens = 0;
 
 	arg = (char **)malloc(101 * sizeof(char *));
 
@@ -21,6 +23,7 @@ char **tokenize(char *line, char *delim)
 	{
 		arg[i] = malloc(strlen(token) + 1);
 		strcpy(arg[i++], token);
+		n_tokens += 1;
 		token = strtok(NULL, delim);
 	}
 	arg[i] = NULL;
