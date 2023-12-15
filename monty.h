@@ -47,7 +47,7 @@ void invalid_instruct(size_t line_numb, char *opcode);
 
 void get_instructions(size_t line_numb, char *opcode);
 
-void push(stack_t **stack, char *value, size_t line_num);
+void push(stack_t **stack, size_t line_num);
 
 void is_integer(int value);
 
