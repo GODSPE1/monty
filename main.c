@@ -9,6 +9,8 @@ int main(int argc, char **argv);
  * Return: 0
  */
 
+char *value;
+instruction_t *instructions;
 
 int main(int argc, char **argv)
 {
@@ -18,7 +20,6 @@ int main(int argc, char **argv)
 	unsigned int line_numb;
 	char **opcode;
 	stack_t *stack = NULL;
-	instruction_t *instructions;
 
 	line = NULL;
 	len = 0;
@@ -30,12 +31,15 @@ int main(int argc, char **argv)
 		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
+
 	file = fopen(argv[1], "r");
+
 	if (file == NULL)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
+
 	instructions = malloc(sizeof(instruction_t));
 	if (instructions == NULL)
 	{
@@ -59,9 +63,10 @@ int main(int argc, char **argv)
 		}
 
 		opcode = tokenize(line_cpy, delim);
+
 		/*
-		 * printf("____line number = %u____\n", line_numb);
-		 */
+		* printf("____line number = %u____\n", line_numb);
+		*/
 
 		if (opcode == NULL)
 		{

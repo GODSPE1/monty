@@ -11,7 +11,7 @@ void push(stack_t **stack, unsigned int line_num)
 {
 	stack_t *temp;
 
-	if (value == NULL || isalpha(value))
+	if (value == NULL || isalpha(*value))
 	{
 		fprintf(stderr, "L%u: usage: push integer\n", line_num);
 		exit(EXIT_FAILURE);

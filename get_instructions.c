@@ -33,18 +33,18 @@ void invalid_instruct(size_t line_numb, char *opcode)
 void get_instructions(size_t line_numb, char *opcode, instruction_t *inst)
 {
 	int i = 0;
-	instruction_t instructions[] = {
+	instruction_t instruct[] = {
 		{"push", push},
 		{"pall", pall},
 		{NULL, NULL}
 	};
 
-	for (; instructions[i].opcode != NULL; i++)
+	for (; instruct[i].opcode != NULL; i++)
 	{
-		if (strcmp(instructions[i].opcode, opcode) == 0)
+		if (strcmp(instruct[i].opcode, opcode) == 0)
 		{
-			inst->opcode = instructions[i].opcode;
-			inst->f = instructions[i].f;
+			inst->opcode = instruct[i].opcode;
+			inst->f = instruct[i].f;
 			return;
 		}
 	}
