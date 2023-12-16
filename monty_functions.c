@@ -2,15 +2,17 @@
 /**
  * push - pushes an integer into the stack.
  * @stack: pointer to the stack.
- * @value: the value to be pushed onto the stack
- * @line_num: line number where the push is from
+ * @line_num: line number where the push opcode is from
+ *
+ * Return: nothing
  */
 
 void push(stack_t **stack, unsigned int line_num)
 {
 	stack_t *temp;
+	char *value;
 
-	if (value == NULL || isalpha(*value))
+	if (value == NULL || isalpha(value))
 	{
 		fprintf(stderr, "L%u: usage: push integer\n", line_num);
 		exit(EXIT_FAILURE);
@@ -38,15 +40,16 @@ void push(stack_t **stack, unsigned int line_num)
 
 
 /**
- * pall_func - prints all the elements of stack_t list
- * @stack_t: a pointer to the top node list_t structure
+ * pall - prints all the elements of stack_t list
+ * @stack: a pointer to the top node list_t structure
+ * @line_num: line number where the pall opcode is from
  *
  * Return: Nothing.
  */
 void pall(stack_t **stack, unsigned int line_num)
 {
 	stack_t *h = *stack;
-	
+
 	(void)line_num;
 	while (h != NULL)
 	{

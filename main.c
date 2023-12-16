@@ -1,4 +1,5 @@
 #include "monty.h"
+int main(int argc, char **argv);
 
 /**
  * main - Entry point
@@ -8,9 +9,6 @@
  * Return: 0
  */
 
-instruction_t *instructions;
-int n_tokens;
-char *value;
 
 int main(int argc, char **argv)
 {
@@ -21,6 +19,7 @@ int main(int argc, char **argv)
 	char **opcode;
 	stack_t *stack = NULL;
 	instruction_t *instructions;
+	char *value;
 
 	line = NULL;
 	len = 0;
