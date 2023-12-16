@@ -41,7 +41,7 @@ extern instruction_t *instructions;
 instruction_t *instructions;
 
 extern char *value;
-
+char *value;
 char **tokenize(char *line, char *delim);
 
 void free_mem(char **arg);

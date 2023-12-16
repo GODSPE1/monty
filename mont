@@ -20,40 +20,58 @@ void free_mem(char **arg)
 }
 #include "monty.h"
 
+/**
+ * invalid_instruct - prints error message for invalid instruction
+ * @line_numb: line number where the opcode is from
+ * @opcode: the instruction
+ *
+ * Return: nothing
+ */
+
 void invalid_instruct(size_t line_numb, char *opcode)
 {
-    fprintf(stderr, "L%ld: unknown instruction %s\n", line_numb, opcode);
+	fprintf(stderr, "L%ld: unknown instruction %s\n", line_numb, opcode);
 	free(instructions);
 	exit(EXIT_FAILURE);
 }
 
-void get_instructions(size_t line_numb, char *opcode)
-{
-    int i = 0; 
-    instruction_t instructions[] = {
-        {"push", push},
-        {"pall", pall},
-        {NULL, NULL}
-    };
+/**
+ * get_instructions - gets and instruction
+ * @line_numb: line number where the instruct is from
+ * @opcode: instruction from stream
+ * @inst: pointer to the instruction_t structure
+ *
+ * Description: sets an array of instruction and function pointers,
+ * interate through the array
+ * comparing the opcode from stream with the opcode in struct
+ * if found sets the instruction struct in main to the opcode in array
+ * and sets the function pointer to the function in array
+ *
+ * Return: nothing
+ */
 
-for (; instructions[i].opcode != NULL; i++)
+void get_instructions(size_t line_numb, char *opcode, instruction_t *inst)
 {
-    if (strcmp(instructions[i].opcode, opcode) == 0)
-    {
-        instructions->opcode = instructions[i].opcode;
-        instructions->f = instructions[i].f;
-    }
-    else
-        invalid_instruct(line_numb, opcode);
+	int i = 0;
+	instruction_t instructions[] = {
+		{"push", push},
+		{"pall", pall},
+		{NULL, NULL}
+	};
+
+	for (; instructions[i].opcode != NULL; i++)
+	{
+		if (strcmp(instructions[i].opcode, opcode) == 0)
+		{
+			inst->opcode = instructions[i].opcode;
+			inst->f = instructions[i].f;
+			return;
+		}
+	}
+	invalid_instruct(line_numb, opcode);
 }
 #include "monty.h"
-
-void init_instruction(instruction_t *inst, char *opcode, void *func)
-{
-    inst->opcode = strdup(opcode);
-    inst->f = func;
-}
-#include "monty.h"
+int main(int argc, char **argv);
 
 /**
  * main - Entry point
@@ -63,23 +81,17 @@ void init_instruction(instruction_t *inst, char *opcode, void *func)
  * Return: 0
  */
 
-instruction_t *instructions;
-char *value;
-int n_tokens;
 
 int main(int argc, char **argv)
 {
 	FILE *file;
-	char *line, *delim;
+	char *line, *delim, *line_cpy;
 	size_t len;
 	unsigned int line_numb;
 	char **opcode;
-	size_t read;
 	stack_t *stack = NULL;
-	extern char *value;
-	/* instruction_t instructions;*/
+	instruction_t *instructions;
 
-	size_t i;
 	line = NULL;
 	len = 0;
 	line_numb = 1;
@@ -100,83 +112,100 @@ int main(int argc, char **argv)
 	if (instructions == NULL)
 	{
 		printf("Error: malloc failed");
-		free(instructions);
+		fclose(file);
+		exit(EXIT_FAILURE);
 	}
 
-	while (getline(&line, &len, file) != -1)
+	while ((getline(&line, &len, file)) != -1)
 	{
-		opcode = tokenize(line, delim);
-		printf("____line number = %u____\n", line_numb);
-
-		value = opcode[1];
-
-		if (opcode != NULL)
+		line_cpy = strdup(line);
+		if (line_cpy == NULL)
 		{
-			get_instructions(line_numb, opcode[0]);
-			instructions->f(&stack, line_numb);
+			perror("strdup");
+			exit(EXIT_FAILURE);
+		}
+		if (strspn(line_cpy, " \t\r\n") == strlen(line_cpy))
+		{
+			free(line_cpy);
+			continue;
 		}
 
-		printf("opcode = %s \n", opcode[0]);
-		printf("argument = %s \n", opcode[1]);
+		opcode = tokenize(line_cpy, delim);
+		/*
+		 * printf("____line number = %u____\n", line_numb);
+		 */
 
+		if (opcode == NULL)
+		{
+			free(line_cpy);
+			continue;
+		}
+
+		value = opcode[1];
+		get_instructions(line_numb, opcode[0], instructions);
+		instructions->f(&stack, line_numb);
+
+		free(line_cpy);
 		line_numb += 1;
-		i = 0;
-
 		free_mem(opcode);
 	}
+
 	free(instructions);
 	fclose(file);
 	return (0);
-}#include "monty.h"
+}
+#include "monty.h"
 /**
  * push - pushes an integer into the stack.
  * @stack: pointer to the stack.
- * @value: the value to be pushed onto the stack
- * @line_num: line number where the push is from
+ * @line_num: line number where the push opcode is from
+ *
+ * Return: nothing
  */
 
 void push(stack_t **stack, unsigned int line_num)
 {
-    char *value;
+	stack_t *temp;
 
-    if (value == NULL || isalpha(*value))
-    {
-        dprintf(2, "L%u: usage: push integer\n", line_num);
-        exit(EXIT_FAILURE);
-    }
+	if (value == NULL || isalpha(value))
+	{
+		fprintf(stderr, "L%u: usage: push integer\n", line_num);
+		exit(EXIT_FAILURE);
+	}
 
-    stack_t *temp = malloc(sizeof(stack_t));
+	temp = malloc(sizeof(stack_t));
 
-    if (temp == NULL)
-    {
-        dprintf(2, "Error: malloc failed\n");
-        exit(EXIT_FAILURE);
-    }
+	if (temp == NULL)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
 
-    temp->n = atoi(value);
-    temp->next = *stack;
-    temp->prev = NULL;
+	temp->n = atoi(value);
+	temp->next = *stack;
+	temp->prev = NULL;
 
-    if (*stack != NULL)
-    {
-        (*stack)->prev = temp;
-    }
+	if (*stack != NULL)
+	{
+		(*stack)->prev = temp;
+	}
 
-    *stack = temp;
+	*stack = temp;
 }
 
 
 /**
- * pall_func - prints all the elements of stack_t list
- * @stack_t: a pointer to the top node list_t structure
+ * pall - prints all the elements of stack_t list
+ * @stack: a pointer to the top node list_t structure
+ * @line_num: line number where the pall opcode is from
  *
  * Return: Nothing.
  */
 void pall(stack_t **stack, unsigned int line_num)
 {
-	(void)line_num;
 	stack_t *h = *stack;
 
+	(void)line_num;
 	while (h != NULL)
 	{
 		printf("%d\n", h->n);
@@ -193,12 +222,12 @@ void pall(stack_t **stack, unsigned int line_num)
  * Return: array of strings a
  */
 
-extern int n_tokens;
 char **tokenize(char *line, char *delim)
 {
-	char **arg, *token;
+	char **arg;
 	int i = 0;
-	n_tokens = 0;
+	size_t len = 0;
+	char *token;
 
 	arg = (char **)malloc(101 * sizeof(char *));
 
@@ -206,9 +235,14 @@ char **tokenize(char *line, char *delim)
 
 	while (token != NULL)
 	{
+		len = strlen(token);
+		while (len > 0 && !isalnum(token[len - 1]))
+		{
+			token[--len] = '\0';
+		}
+
 		arg[i] = malloc(strlen(token) + 1);
 		strcpy(arg[i++], token);
-		n_tokens += 1;
 		token = strtok(NULL, delim);
 	}
 	arg[i] = NULL;
@@ -216,56 +250,3 @@ char **tokenize(char *line, char *delim)
 
 	return (arg);
 }
-#ifndef _MONTY_H_
-#define _MONTY_H_
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-
-/**
- * struct stack_s - doubly linked list representation of a stack (or queue)
- * @n: integer
- * @prev: points to the previous element of the stack (or queue)
- * @next: points to the next element of the stack (or queue)
- *
- * Description: doubly linked list node structure
- * for stack, queues, LIFO, FIFO
- */
-typedef struct stack_s
-{
-        int n;
-        struct stack_s *prev;
-        struct stack_s *next;
-} stack_t;
-extern stack_t *stack;
-/**
- * struct instruction_s - opcode and its function
- * @opcode: the opcode
- * @f: function to handle the opcode
- *
- * Description: opcode and its function
- * for stack, queues, LIFO, FIFO
- */
-typedef struct instruction_s
-{
-        char *opcode;
-        void (*f)(stack_t **stack, unsigned int line_number);
-} instruction_t;
-
-extern instruction_t *instructions;
-char **tokenize(char *line, char *delim);
-
-void free_mem(char **arg);
-
-void init_instruction(instruction_t *inst, char *opcode, void *func);
-
-void invalid_instruct(size_t line_numb, char *opcode);
-
-void get_instructions(size_t line_numb, char *opcode);
-
-void push(stack_t **stack, unsigned int line_num);
-
-void pall(stack_t **stack, unsigned int line_num);
-#endif

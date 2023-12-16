@@ -19,7 +19,6 @@ int main(int argc, char **argv)
 	char **opcode;
 	stack_t *stack = NULL;
 	instruction_t *instructions;
-	char *value;
 
 	line = NULL;
 	len = 0;

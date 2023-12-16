@@ -10,7 +10,6 @@
 void push(stack_t **stack, unsigned int line_num)
 {
 	stack_t *temp;
-	char *value;
 
 	if (value == NULL || isalpha(value))
 	{
