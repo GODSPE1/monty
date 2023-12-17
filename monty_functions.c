@@ -85,3 +85,28 @@ void add(stack_t **stack, unsigned int line_num)
 	pop(stack, line_num);
 
 }
+
+
+/**
+ * pop - remove the top element of the stack_t list
+ * @stack: a pointer to the top node list_t structure
+ * @line_num: line number where the pall opcode is from
+ *
+ * Return: Nothing.
+ */
+void pop(stack_t **stack, unsigned int line_num)
+{
+        stack_t *next = NULL;
+
+        if ((*stack)->next == NULL)
+        {
+                printf("L%d: can't pop an empty stack\n", line_num);
+                exit(EXIT_FAILURE);
+        }
+        next = (*stack)->next->next;
+        free((*stack)->next);
+        if (next)
+                next->prev = *stack;
+        (*stack)->next = next;
+}
+
