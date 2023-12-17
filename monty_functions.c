@@ -56,3 +56,32 @@ void pall(stack_t **stack, unsigned int line_num)
 		h = h->next;
 	}
 }
+
+/**
+ * add - add two top elements in a stack
+ * @stack: a pointer to the top node list_t structure
+ * @line_num: line number where the add function is called
+ *
+ * Return: Nothing.
+ */
+void add(stack_t **stack, unsigned int line_num)
+{
+	stack_t *tmp1, *tmp2;
+	size_t node_count;
+
+	node_count = count_node(stack, line_num);
+
+	if (node_count < 2)
+	{
+		printf("L%d: can't add, stack too short\n", line_num);
+		exit(EXIT_FAILURE);
+	}
+
+	tmp1 = *stack;
+	tmp2 = tmp1->next;
+
+	tmp2->n = tmp1->n + tmp2->n;
+
+	pop(stack, line_num);
+
+}
