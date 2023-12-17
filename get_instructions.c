@@ -8,15 +8,14 @@
  * Return: nothing
  */
 
-void invalid_instruct(size_t line_numb, char *opcode)
+void invalid_instruct(size_t line_numb, char *opcode, instruction_t *inst)
 {
 	fprintf(stderr, "L%ld: unknown instruction %s\n", line_numb, opcode);
-	free(instructions);
-	exit(EXIT_FAILURE);
+	free(inst);
 }
 
 /**
- * get_instructions - gets and instruction
+ * get_instruction - gets and instruction
  * @line_numb: line number where the instruct is from
  * @opcode: instruction from stream
  * @inst: pointer to the instruction_t structure
@@ -30,7 +29,7 @@ void invalid_instruct(size_t line_numb, char *opcode)
  * Return: nothing
  */
 
-void get_instructions(size_t line_numb, char *opcode, instruction_t *inst)
+int get_instruction(size_t line_numb, char *opcode, instruction_t *inst)
 {
 	int i = 0;
 	instruction_t instruct[] = {
@@ -45,8 +44,8 @@ void get_instructions(size_t line_numb, char *opcode, instruction_t *inst)
 		{
 			inst->opcode = instruct[i].opcode;
 			inst->f = instruct[i].f;
-			return;
+			return (1);
 		}
 	}
-	invalid_instruct(line_numb, opcode);
+	return (-1);
 }

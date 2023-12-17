@@ -10,7 +10,6 @@ int main(int argc, char **argv);
  */
 
 char *value;
-instruction_t *instructions;
 
 int main(int argc, char **argv)
 {
@@ -20,6 +19,7 @@ int main(int argc, char **argv)
 	unsigned int line_numb;
 	char **opcode;
 	stack_t *stack = NULL;
+	instruction_t *instruction;
 
 	line = NULL;
 	len = 0;
@@ -40,8 +40,8 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
-	instructions = malloc(sizeof(instruction_t));
-	if (instructions == NULL)
+	instruction = malloc(sizeof(instruction_t));
+	if (instruction == NULL)
 	{
 		printf("Error: malloc failed");
 		fclose(file);
@@ -73,17 +73,26 @@ int main(int argc, char **argv)
 			free(line_cpy);
 			continue;
 		}
-
 		value = opcode[1];
-		get_instructions(line_numb, opcode[0], instructions);
-		instructions->f(&stack, line_numb);
+		if (get_instruction(line_numb, opcode[0], instruction) != 1)
+		{
+			free(line);
+			free(line_cpy);
+			invalid_instruct(line_numb, opcode[0], instruction);
+			free_mem(opcode);
+			fclose(file);
+			exit(EXIT_FAILURE);
+		}
 
-		free(line_cpy);
+		instruction->f(&stack, line_numb);
+
 		line_numb += 1;
+		free(line_cpy);
 		free_mem(opcode);
 	}
 
-	free(instructions);
+	free(line);
+	free(instruction);
 	fclose(file);
 	return (0);
 }

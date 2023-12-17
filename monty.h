@@ -37,8 +37,6 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-extern instruction_t *instructions;
-
 extern char *value;
 
 char **tokenize(char *line, char *delim);
@@ -47,9 +45,9 @@ void free_mem(char **arg);
 
 void init_instruction(instruction_t *inst, char *opcode, void *func);
 
-void invalid_instruct(size_t line_numb, char *opcode);
+void invalid_instruct(size_t line_numb, char *opcode, instruction_t *inst);
 
-void get_instructions(size_t line_numb, char *opcode, instruction_t *inst);
+int get_instruction(size_t line_numb, char *opcode, instruction_t *inst);
 
 void push(stack_t **stack, unsigned int line_num);
 
