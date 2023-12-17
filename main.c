@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 			continue;
 		}
 		value = opcode[1];
-		if (get_instruction(line_numb, opcode[0], instruction) != 1)
+		if (get_instruction(opcode[0], instruction) != 1)
 		{
 			free(line);
 			free(line_cpy);

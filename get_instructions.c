@@ -29,7 +29,7 @@ void invalid_instruct(size_t line_numb, char *opcode, instruction_t *inst)
  * Return: nothing
  */
 
-int get_instruction(size_t line_numb, char *opcode, instruction_t *inst)
+int get_instruction(char *opcode, instruction_t *inst)
 {
 	int i = 0;
 	instruction_t instruct[] = {
