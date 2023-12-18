@@ -1,4 +1,10 @@
 #include "monty.h"
+
+void push(stack_t **stack, unsigned int line_num);
+void pall(stack_t **stack, unsigned int line_num);
+void add(stack_t **stack, unsigned int line_num);
+void pop(stack_t **stack, unsigned int line_num);
+
 /**
  * push - pushes an integer into the stack.
  * @stack: pointer to the stack.
