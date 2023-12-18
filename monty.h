@@ -52,4 +52,27 @@ int get_instruction(char *opcode, instruction_t *inst);
 void push(stack_t **stack, unsigned int line_num);
 
 void pall(stack_t **stack, unsigned int line_num);
+
+void add(stack_t **stack, unsigned int line_num);
+
+void pop(stack_t **stack, unsigned int line_num);
+
+void swap(stack_t **stack, unsigned int line_num);
+
+void mul(stack_t **stack, unsigned int line_num);
+
+void mod(stack_t **stack, unsigned int line_num);
+void sub(stack_t **stack, unsigned int line_num);
+
+void div(stack_t **stack, unsigned int line_num);
+
+void nop(stack_t **stack, unsigned int line_num);
+
+void pchar(stack_t **stack, unsigned int line_num);
+
+void rot1(stack_t **stack, unsigned int line_num);
+
+void pstr(stack_t **stack, unsigned int line_num);
+
+
 #endif
