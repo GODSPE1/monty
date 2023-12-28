@@ -79,14 +79,14 @@ void add(stack_t **stack, unsigned int line_num)
 
 	if (node_count < 2)
 	{
-		printf("L%d: can't add, stack too short\n", line_num);
+		fprintf(stderr, "L%d: can't add, stack too short\n", line_num);
 		exit(EXIT_FAILURE);
 	}
 
 	tmp1 = *stack;
 	tmp2 = tmp1->next;
 
-	tmp2->n = tmp1->n + tmp2->n;
+	tmp2->n += tmp1->n;
 
 	pop(stack, line_num);
 
@@ -104,15 +104,24 @@ void pop(stack_t **stack, unsigned int line_num)
 {
         stack_t *next = NULL;
 
-        if ((*stack)->next == NULL)
+        if (*stack == NULL || (*stack)->next == NULL)
         {
-                printf("L%d: can't pop an empty stack\n", line_num);
+                fprintf(stderr, "L%d: can't pop an empty stack\n", line_num);
                 exit(EXIT_FAILURE);
         }
-        next = (*stack)->next->next;
-        free((*stack)->next);
+
+        next = (*stack)->next;
+
+        free(*stack);
+
         if (next)
-                next->prev = *stack;
-        (*stack)->next = next;
+	{
+		next->prev = NULL;
+		*stack = next;
+	}
+	else
+	{
+		*stack = NULL;
+	}
 }
 

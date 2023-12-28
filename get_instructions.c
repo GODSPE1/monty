@@ -35,6 +35,12 @@ int get_instruction(char *opcode, instruction_t *inst)
 	instruction_t instruct[] = {
 		{"push", push},
 		{"pall", pall},
+		{"add", add},
+		{"pop", pop},
+		{"swap", swap},
+		{"mod", mod},
+		{"mul", mul},
+		{"div", _div},
 		{NULL, NULL}
 	};
 
