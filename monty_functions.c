@@ -75,7 +75,7 @@ void add(stack_t **stack, unsigned int line_num)
 	stack_t *tmp1, *tmp2;
 	size_t node_count;
 
-	node_count = count_node(stack, line_num);
+	node_count = count_node(stack);
 
 	if (node_count < 2)
 	{

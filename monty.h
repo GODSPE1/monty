@@ -1,5 +1,5 @@
-#ifndef _MONTY_H_
-#define _MONTY_H_
+#ifndef MONTY_H
+#define MONTY_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -63,8 +63,9 @@ void mul(stack_t **stack, unsigned int line_num);
 
 void mod(stack_t **stack, unsigned int line_num);
 void sub(stack_t **stack, unsigned int line_num);
-
-void div(stack_t **stack, unsigned int line_num);
+/**
+ * void div(stack_t **stack, unsigned int line_num);
+ */
 
 void nop(stack_t **stack, unsigned int line_num);
 
@@ -74,5 +75,6 @@ void rot1(stack_t **stack, unsigned int line_num);
 
 void pstr(stack_t **stack, unsigned int line_num);
 
+size_t count_node(stack_t **stack);
 
-#endif
+#endif /* MONTY_H */

@@ -1,4 +1,8 @@
 #include "monty.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 int main(int argc, char **argv);
 
 /**
@@ -59,36 +63,40 @@ int main(int argc, char **argv)
 		if (strspn(line_cpy, " \t\r\n") == strlen(line_cpy))
 		{
 			free(line_cpy);
-			continue;
 		}
-
-		opcode = tokenize(line_cpy, delim);
-
-		/*
-		* printf("____line number = %u____\n", line_numb);
-		*/
-
-		if (opcode == NULL)
+		else
 		{
+
+			opcode = tokenize(line_cpy, delim);
+
+			/*
+			 * printf("____line number = %u____\n", line_numb);
+			 */
+
+			if (opcode == NULL)
+			{
+				free(line_cpy);
+			}
+			else
+			{
+				value = opcode[1];
+				if (get_instruction(opcode[0], instruction) != 1)
+				{
+					free(line);
+					free(line_cpy);
+					invalid_instruct(line_numb, opcode[0], instruction);
+					free_mem(opcode);
+					fclose(file);
+					exit(EXIT_FAILURE);
+				}
+
+				instruction->f(&stack, line_numb);
+			}
+
+			line_numb += 1;
 			free(line_cpy);
-			continue;
-		}
-		value = opcode[1];
-		if (get_instruction(opcode[0], instruction) != 1)
-		{
-			free(line);
-			free(line_cpy);
-			invalid_instruct(line_numb, opcode[0], instruction);
 			free_mem(opcode);
-			fclose(file);
-			exit(EXIT_FAILURE);
 		}
-
-		instruction->f(&stack, line_numb);
-
-		line_numb += 1;
-		free(line_cpy);
-		free_mem(opcode);
 	}
 
 	free(line);
