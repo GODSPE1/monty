@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 	instruction = malloc(sizeof(instruction_t));
 	if (instruction == NULL)
 	{
-		printf("Error: malloc failed");
+		fprintf(stderr, "Error: malloc failed");
 		fclose(file);
 		exit(EXIT_FAILURE);
 	}
